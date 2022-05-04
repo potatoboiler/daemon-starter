@@ -6,6 +6,8 @@ use daemonize::Daemonize;
 struct Args {
     #[clap(short, long, multiple_values = true)]
     name: Vec<String>,
+    #[clap(short, long)]
+    discord: bool,
 }
 
 struct EnvInfo {
@@ -49,5 +51,8 @@ fn main() {
     let args = Args::parse();
     for i in args.name {
         init_daemon(&i, &envinfo);
+    }
+    if args.discord {
+        init_daemon(&"discord".to_string(), &envinfo);
     }
 }
