@@ -1,5 +1,7 @@
 use clap::Parser;
 use daemonize::Daemonize;
+use std::path::PathBuf;
+use std::process::{Command, Stdio};
 
 #[derive(Parser, Debug)]
 #[clap(author, version, about, long_about = None)]
@@ -17,7 +19,9 @@ struct EnvInfo {
 }
 
 fn init_daemon(cmd: &String, env: &EnvInfo) {
-    std::process::Command::new(cmd)
+    Command::new(cmd)
+        .stdout(Stdio::null())
+        .stderr(Stdio::null())
         .spawn()
         .expect(format!("{} failed to start", &cmd).as_str());
 
